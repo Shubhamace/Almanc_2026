@@ -32,6 +32,7 @@ from collections import defaultdict
 
 main = Blueprint('main',__name__)
 
+    
 territory={
             'AMERICAN SAMOA':1,'GUAM':2,'PUERTO RICO':3,'VIRGIN ISLANDS':4,'NORTHERN MARIANA ISLANDS':5,
         }
@@ -331,6 +332,7 @@ def gov_profile_tr(territory_id,folder_path, doc_name,img_path):
             try:
                 content = clean_text(row['content'])
                 word_count = len(content.split())
+                print(content)
                 if clean_text(row['content']): 
                     create_word_doc(folder_path, doc_name, content, word_count,"[]",img_path)
             except Exception as e:
@@ -384,6 +386,7 @@ def state_profile_tr(territory_id,folder_path, doc_name,img_path):
         pass
 
 def map_fun(state_id,folder_path, doc_name,img_path):
+    # print(img_path)
     sql = text('''
                 select State_Map from almc_state where state_id = :state_id
             ''')
@@ -405,7 +408,7 @@ def map_fun(state_id,folder_path, doc_name,img_path):
         pass
 ##
  
-@main.route('/',methods=["GET"])
+@main.route('/generate_doc',methods=["GET"])
 def retrive_state():
     sql = text('''select State_id,State_name,State_Map,State_code, is_territory from almc_state order by state_name ''')
     with db.session.begin():
@@ -451,7 +454,9 @@ def retrive_state():
                 president_politics(state["state_id"],folder_path, doc_name,"")
             elif folder== "Gov. Profile":
                 name = str(state['state_name']).upper()
+                print()
                 territory_id = territory.get(name)
+                print(territory_id)
                 # Placeholder Representative profiles
                 if territory_id:
                     gov_profile_tr(territory_id,folder_path, doc_name,"")
