@@ -1,3 +1,4 @@
+import json
 import os
 import logging
 from flask import Flask
@@ -6,6 +7,7 @@ from .extensions import db, migrate
 from .routes import main
 from datetime import timedelta
 from dotenv import load_dotenv
+from flasgger import Swagger
 from logging.handlers import RotatingFileHandler
 
 load_dotenv()
@@ -44,6 +46,9 @@ def create_app():
     db.init_app(app)
     app.register_blueprint(main)
     migrate.init_app(app, db)
+    with open("swagger.json") as spec_file:
+        swagger_config = json.load(spec_file)
+    Swagger(app,template=swagger_config)
     with app.app_context():
         pass
     
