@@ -1,0 +1,74 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API documentation for Web Status Checker",
+        "title": "Web Status Checker",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/check_status": {
+            "get": {
+                "summary": "Perform a manual status check for predefined websites",
+                "description": "Checks the status of a predefined list of websites and generates a CSV report of the results.",
+                "responses": {
+                    "200": {
+                        "description": "Status check completed successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Status check completed."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "example": "An error occurred during the status check."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stop": {
+            "post": {
+                "summary": "Stop the server",
+                "description": "Stops the server using the Werkzeug shutdown function.",
+                "responses": {
+                    "200": {
+                        "description": "Server stopped successfully",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Server is shutting down."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server shutdown failed",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "example": "Server shutdown failed."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
